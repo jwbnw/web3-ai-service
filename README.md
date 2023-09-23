@@ -24,4 +24,4 @@ Open [https://localhost:7247/swagger/index.html](https://localhost:7247/swagger/
 
 - I highly recommend either using VS Code or Visual Studio
 
-- If having trouble creating a local cert see [This Stackoverflow article](https://stackoverflow.com/questions/55485511/how-to-run-dotnet-dev-certs-https-trust)
+- If having trouble creating a local cert see [This Stackoverflow page](https://stackoverflow.com/questions/55485511/how-to-run-dotnet-dev-certs-https-trust)
