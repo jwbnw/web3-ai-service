@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Web3Ai.Service.Controllers;
 
+//TODO: Add a controller exception filter or enter a ticket to do so.
 [ApiController]
 [Route("[controller]")]
 public class UserDataController : ControllerBase
@@ -11,6 +12,13 @@ public class UserDataController : ControllerBase
     public UserDataController(ILogger<UserDataController> logger)
     {
         _logger = logger;
+    }
+
+    [HttpPost]
+    [Route("CreateAccount")]
+    public ActionResult<CreateAccountResponse> CreateAcount()
+    {
+        throw new NotImplementedException();
     }
 
     [HttpGet]
