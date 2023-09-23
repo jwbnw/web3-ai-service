@@ -7,8 +7,6 @@ namespace Web3Ai.Service.Controllers;
 [Route("[controller]")]
 public class UserDataController : ControllerBase
 {
-    private readonly ILogger<UserDataController> _logger;
-
     public UserDataController(ILogger<UserDataController> logger)
     {
         _logger = logger;
@@ -33,4 +31,6 @@ public class UserDataController : ControllerBase
 
         return testUser;
     }
+
+    private readonly ILogger<UserDataController> _logger;
 }
