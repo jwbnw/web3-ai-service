@@ -1,9 +1,10 @@
 using System.Text;
 using TweetNaclSharp;
+using SimpleBase;
 
 namespace Web3Ai.Service;
 
-internal interface IAuthService
+public interface IAuthService
 {
     /// <summary>
     /// TODO:
@@ -25,9 +26,9 @@ internal interface IAuthService
     bool SolveChallenge(string pubkey, string hash, string signedHash);
 }
 
-internal class AuthService : IAuthService 
+public class AuthService : IAuthService 
 {
-    internal AuthService(ILogger<AuthService> logger, UTF8Encoding encoder)
+    public AuthService(ILogger<AuthService> logger, UTF8Encoding encoder)
     {
         _encoder = encoder;
         _logger = logger;
@@ -50,11 +51,9 @@ internal class AuthService : IAuthService
             throw new ArgumentNullException("pubkey, hash, or signed hash");
         }
 
-        var byteHash = _encoder.GetBytes(hash);
-        var byteSignedHash = _encoder.GetBytes(signedHash);
-        var bytePubKey = _encoder.GetBytes(pubkey);
+        var hashEncoded = _encoder.GetBytes(hash);
 
-        return Nacl.SignDetachedVerify(byteHash, byteSignedHash, bytePubKey);
+        return Nacl.SignDetachedVerify(hashEncoded, Base58.Bitcoin.Decode(signedHash), Base58.Bitcoin.Decode(pubkey));
     }
 
     private readonly UTF8Encoding _encoder;
