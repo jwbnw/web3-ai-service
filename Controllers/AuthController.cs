@@ -7,17 +7,25 @@ namespace Web3Ai.Service.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    public AuthController(ILogger<UserDataController> logger)
+    public AuthController(IAuthService authService, ILogger<UserDataController> logger)
     {
+        _authService = authService;
         _logger = logger;
     }
 
     [HttpPost]
     [Route("VerifySecret")]
-    public ActionResult<GenericResponse> VerifySecret()
+    public ActionResult<GenericResponse> VerifySecret(SecretRequest secretRequest)
     {
-        throw new NotImplementedException();
+        var result = _authService.SolveChallenge(secretRequest.PublickKey, TestHash, secretRequest.SignedHash);
+
+        return new GenericResponse()
+        {
+            IsSuccess = result,
+        };
     }
 
+    private const string TestHash = "Hello, world";
     private readonly ILogger<UserDataController> _logger;
+    private readonly IAuthService _authService;
 }
