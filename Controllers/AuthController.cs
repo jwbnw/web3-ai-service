@@ -13,6 +13,13 @@ public class AuthController : ControllerBase
         _logger = logger;
     }
 
+    [HttpGet]
+    [Route("InitChallenge")]
+    public ActionResult<InitChallengeResponse> InitChallenge()
+    {
+        throw new NotImplementedException();
+    }
+
     [HttpPost]
     [Route("VerifySecret")]
     public ActionResult<GenericResponse> VerifySecret(SecretRequest secretRequest)
