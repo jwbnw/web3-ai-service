@@ -1,5 +1,4 @@
-namespace Web3Ai.Service;
-
+namespace Web3Ai.Service.Models;
 public class GenericResponse
 {
     public required bool IsSuccess { get; set; }
