@@ -1,4 +1,4 @@
-namespace Web3Ai.Service;
+namespace Web3Ai.Service.Models;
 
 public class CreateAccountRequest
 {

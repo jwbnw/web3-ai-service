@@ -2,7 +2,7 @@ using System.Text;
 using TweetNaclSharp;
 using SimpleBase;
 
-namespace Web3Ai.Service;
+namespace Web3Ai.Service.Services;
 
 public interface IAuthService
 {

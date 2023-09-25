@@ -1,22 +1,21 @@
 using Web3Ai.Service.Data.Entities;
 
 namespace Web3Ai.Service.Models;
-
-public class CreateAccountResponse
+public class AuthenticateResponse
 {
     public Guid UserId { get; set; }
 
-    public string? Wallet { get; set; }
+    public string Wallet { get; set; }
 
     public string? Username { get; set; }
 
-    public int? PhoneNumber { get; set;}
-
     public string? Email { get; set; }
+
+    public int? PhoneNumber { get; set; }
 
     public string Token { get; set; }
 
-    public CreateAccountResponse(User user, string token)
+    public AuthenticateResponse(User user, string token)
     {
         UserId = user.UserId;
         Wallet = user.Wallet;
@@ -26,5 +25,4 @@ public class CreateAccountResponse
         
         Token = token;
     }
-
 }
