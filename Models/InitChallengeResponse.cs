@@ -1,6 +1,6 @@
 namespace Web3Ai.Service.Models;
 
-public class InitChallengeResponse : GenericResponse
+public class InitChallengeResponse
 {
     /// <summary>
     /// Hash to be signed by the client accepting 

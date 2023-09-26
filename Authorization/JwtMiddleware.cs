@@ -13,12 +13,12 @@ public class JwtMiddleware
 
     public async Task Invoke(HttpContext context, IUserDataService userDataService, IJwtUtils jwtUtils)
     {
-        var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+        var token = context.Request.Headers["X-User-Token"].FirstOrDefault()?.Split(" ").Last();
         var userId = jwtUtils.ValidateJwtToken(token);
         if (userId != null)
         {
             // attach user to context on successful jwt validation
-               context.Items["UserId"] = userDataService.GetById(userId.Value); // needs to be a guid
+               context.Items["User"] = userDataService.GetById(userId.Value); // needs to be a guid
         }
 
         await _next(context);
