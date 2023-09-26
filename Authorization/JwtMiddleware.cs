@@ -18,7 +18,7 @@ public class JwtMiddleware
         if (userId != null)
         {
             // attach user to context on successful jwt validation
-               context.Items["User"] = userDataService.GetById(userId.Value); // needs to be a guid
+               context.Items["User"] = userDataService.GetById(userId.Value);
         }
 
         await _next(context);
