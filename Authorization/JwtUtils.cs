@@ -21,7 +21,7 @@ public class JwtUtils : IJwtUtils
     {
         _appSettings = appSettings.Value;
 
-        // Move this out of the
+        // TODO: Move this out of the ctor (w/ next auth refactor)
         if (string.IsNullOrEmpty(_appSettings.Secret))
             throw new Exception("JWT secret not configured");
     }
