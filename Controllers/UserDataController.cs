@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using Web3Ai.Service.Authorization;
 using Web3Ai.Service.Models;
+using Web3Ai.Service.Utils;
 
 namespace Web3Ai.Service.Controllers;
 
@@ -15,6 +17,7 @@ public class UserDataController : ControllerBase
         _logger = logger;
     }
 
+    [SwaggerOperationFilter(typeof(SwaggerHeaderFilter))]
     [HttpPost]
     [Route("UpdateAccount")]
     public ActionResult<CreateAccountResponse> UpdateAccount()
