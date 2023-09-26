@@ -27,7 +27,7 @@ public class UserDataService : IUserDataService
 
     public AuthenticateResponse? Authenticate(SecretRequest secretRequest)
     {
-        var user = _context.Users.Find(secretRequest.PublickKey);
+        var user = _context.Users.SingleOrDefault(user => user.Wallet == secretRequest.PublickKey);
 
         if (user == null) return null;
 
