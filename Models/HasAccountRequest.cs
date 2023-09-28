@@ -1,8 +1,6 @@
 namespace Web3Ai.Service.Models;
 
-public class SecretRequest
+public class HasAccountRequest
 {
     public required string PublicKey { get; set; }
-    
-    public required string SignedHash {get; set;}
 }

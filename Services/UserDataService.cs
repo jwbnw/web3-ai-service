@@ -13,6 +13,8 @@ public interface IUserDataService
 
     CreateAccountResponse? CreateAccount(SecretRequest secretRequest);
 
+    bool HasAccount(string publicKey);
+
     User? GetById(Guid id);
 }
 
@@ -27,7 +29,7 @@ public class UserDataService : IUserDataService
 
     public AuthenticateResponse? Authenticate(SecretRequest secretRequest)
     {
-        var user = _context.Users.SingleOrDefault(user => user.Wallet == secretRequest.PublickKey);
+        var user = _context.Users.SingleOrDefault(user => user.Wallet == secretRequest.PublicKey);
 
         if (user == null) return null;
 
@@ -38,14 +40,14 @@ public class UserDataService : IUserDataService
 
     public CreateAccountResponse? CreateAccount(SecretRequest secretRequest)
     {
-        var exists = _context.Users.SingleOrDefault(user => user.Wallet == secretRequest.PublickKey);
+        var exists = _context.Users.SingleOrDefault(user => user.Wallet == secretRequest.PublicKey);
 
         if (exists != null) throw new ArgumentException("User already exists..");
 
         var user = new User()
         {
             UserId = Guid.NewGuid(),
-            Wallet = secretRequest.PublickKey,
+            Wallet = secretRequest.PublicKey,
             CreateDate = DateTime.Now,
             LastUpdated = DateTime.Now
         };
@@ -61,6 +63,11 @@ public class UserDataService : IUserDataService
     public User? GetById(Guid userId)
     {
         return _context.Users.Find(userId);
+    }
+
+    public bool HasAccount(string publicKey)
+    {
+        return _context.Users.Any(user => user.Wallet == publicKey);
     }
 
     private readonly IJwtUtils _jwtUtils;
