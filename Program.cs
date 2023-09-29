@@ -7,9 +7,24 @@ using Web3Ai.Service;
 using Web3Ai.Service.Utils;
 using Swashbuckle.AspNetCore.Annotations;
 
+var localPolicyName = "_myAllowLocalLogins";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+//For Local Development
+
+builder.Services.AddCors(options => {
+    options.AddPolicy(name: localPolicyName,
+                        builder => 
+                        {
+                            builder
+                                .WithOrigins("http://localhost:3000")
+                                .WithMethods("GET", "POST", "PUT", "DELETE")
+                                .AllowAnyHeader();
+                        });
+});
+
 
 //DI
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -43,6 +58,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(localPolicyName);
 
 app.UseAuthorization();
 

@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
     [Route("CreateAccount")]
     public ActionResult<CreateAccountResponse> CreateAccount(SecretRequest secretRequest)
     {
-        var result = _authService.SolveChallenge(secretRequest.PublickKey, TestHash, secretRequest.SignedHash);
+        var result = _authService.SolveChallenge(secretRequest.PublicKey, TestHash, secretRequest.SignedHash);
     
         if(!result) return BadRequest(new GenericResponse(){ IsSuccess = false, Error = "Challenge Failed" });
         
@@ -53,7 +53,7 @@ public class AuthController : ControllerBase
     [Route("SignIn")]
     public ActionResult<AuthenticateResponse> SignIn(SecretRequest secretRequest)
     {
-       var result = _authService.SolveChallenge(secretRequest.PublickKey, TestHash, secretRequest.SignedHash);
+       var result = _authService.SolveChallenge(secretRequest.PublicKey, TestHash, secretRequest.SignedHash);
     
         if(!result) return BadRequest(new GenericResponse(){ IsSuccess = false, Error = "Challenge Failed" });
         
@@ -65,6 +65,23 @@ public class AuthController : ControllerBase
         }
         
         return Ok(authResult);
+    }
+    
+    [AllowAnonymous]
+    [HttpPost]
+    [Route("HasAccount")]
+    public ActionResult<HasAccountResponse> SignIn(HasAccountRequest hasAccountRequest)
+    {    
+        if(string.IsNullOrWhiteSpace(hasAccountRequest.PublicKey)) return BadRequest(new GenericResponse(){ IsSuccess = false, Error = "PubKey CAnnot be empty" });
+        
+        var hasAccountResult = _userDataService.HasAccount(hasAccountRequest.PublicKey);
+        
+        var response = new HasAccountResponse()
+        {
+            HasAccount = hasAccountResult
+        };
+        
+        return Ok(response);
     }
 
     private const string TestHash = "Hello, world!";
