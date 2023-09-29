@@ -84,7 +84,7 @@ public class AuthController : ControllerBase
         return Ok(response);
     }
 
-    private const string TestHash = "Hello, world!";
+    private const string TestHash = "HashFromServer";
     private readonly ILogger<UserDataController> _logger;
     private readonly IAuthService _authService;
     private readonly IUserDataService _userDataService;
