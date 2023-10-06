@@ -30,6 +30,7 @@ builder.Services.AddCors(options => {
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserDataService, UserDataService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 builder.Services.AddSingleton<UTF8Encoding>();
 builder.Services.AddControllers();
