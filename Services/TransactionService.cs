@@ -5,6 +5,8 @@ using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 
 namespace Web3Ai.Service.Services;
 
@@ -51,15 +53,17 @@ public class TransactionService : ITransactionService
         );
 
 
-        try
-        {
+
             // don't do this live. just for testing/hackathon rush
-            using var responseMsg = await txClient.PostAsync("https://api.devnet.solana.com", txData);
+            var responseMsg = await txClient.PostAsync("https://api.devnet.solana.com", txData);
 
             // same thing as above here..
             var rawRpcResponse = await responseMsg.Content.ReadAsStringAsync();
 
             var solanaTransactionResponse = JsonSerializer.Deserialize<SolanaGetTransactionResponse>(rawRpcResponse) ?? throw new ArgumentException("Solana Transaction Resposne Was Null");
+           
+           if(solanaTransactionResponse.result == null) throw new InvalidOperationException("Unable to communicate with Solana Node RPC");
+           
             var finalInstructions = solanaTransactionResponse.result.transaction.message.instructions[2]; // Confrim it's always going to be the last instruction
             var blockTime = solanaTransactionResponse.result.blockTime;
 
@@ -74,13 +78,7 @@ public class TransactionService : ITransactionService
             };
 
             return transactionValidationResult;
-        }
-
-        // TODO: Log and rethrow here. Will be caught and pretified top level
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
+        
     }
 
     private ValidatedTextToArtTranscationRequest ValidationTransactionResult(ParsedTransactionValidationResult parsedTransactionValidationResult, TextToArtTranscationRequest transcationRequest)
@@ -137,7 +135,10 @@ public class TransactionService : ITransactionService
     {
         var blockTimeDateTime = DateTimeOffset.FromUnixTimeSeconds(blocktime);
 
-        if ((blockTimeDateTime - DateTime.Now).TotalSeconds < 30)
+        var deltaSeconds = (DateTime.Now.ToUniversalTime() - blockTimeDateTime).TotalSeconds;
+
+
+        if (deltaSeconds <= 60)
             return true;
 
         return false;
