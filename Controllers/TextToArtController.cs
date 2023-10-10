@@ -12,28 +12,41 @@ namespace Web3Ai.Service.Controllers;
 public class TextToArtController : ServiceBaseController
 {
     public TextToArtController(
-        IAuthService authService, 
-        ILogger<UserDataController> logger,
-        ITransactionService transactionService)
+        ITransactionService transactionService,
+        ITextToArtService textToArtService)
     {
-        _authService = authService;
-        _logger = logger;
         _transactionService = transactionService;
+        _textToArtService = textToArtService;
     }
 
     [AllowAnonymous]
     [HttpPost]
     [Route("create-transaction")]
-    public async Task<ActionResult<UnsignedTransaction>> CreateTransaction()
+    public async Task<ActionResult<TextToArtTransactionResult>> CreateTransaction(TextToArtTranscationRequest request)
     {
         return await HandleActionResultErrorsAsync(async () =>
         {
-            var transaction = await _transactionService.CreateTransaction();
-            return transaction;
+            var textToArtRequest = await _transactionService.VerifyTransaction(request);
+            var result = await _textToArtService.GenerateArt(textToArtRequest);
+
+            return result;
         });
     }
 
-    private readonly ILogger<UserDataController> _logger;
-    private readonly IAuthService _authService;
+    [AllowAnonymous]
+    [HttpPost]
+    [Route("test-transaction")]
+    public async Task<ActionResult<TextToArtTransactionResult>> Test(TextToArtTranscationRequest request)
+    {
+        return await HandleActionResultErrorsAsync(async () =>
+        {
+            var textToArtRequest = await _transactionService.VerifyTransaction(request);
+            var result = await _textToArtService.GenerateArt(textToArtRequest);
+
+            return result;
+        });
+    }
+
     private readonly ITransactionService _transactionService;
+    private readonly ITextToArtService _textToArtService;
 }
