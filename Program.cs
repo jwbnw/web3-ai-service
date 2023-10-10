@@ -26,13 +26,19 @@ builder.Services.AddCors(options => {
 });
 
 
+
+
 //DI
+builder.Services.AddHttpClient();
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IUserDataService, UserDataService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<ITextToArtService, TextToArtService>();
 
 builder.Services.AddSingleton<UTF8Encoding>();
+
 builder.Services.AddControllers();
 
 // Db Context (Need to swap out for real db before too long)
