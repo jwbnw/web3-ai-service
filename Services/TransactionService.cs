@@ -54,31 +54,31 @@ public class TransactionService : ITransactionService
 
 
 
-            // don't do this live. just for testing/hackathon rush
-            var responseMsg = await txClient.PostAsync("https://api.devnet.solana.com", txData);
+        // don't do this live. just for testing/hackathon rush
+        var responseMsg = await txClient.PostAsync("https://api.devnet.solana.com", txData);
 
-            // same thing as above here..
-            var rawRpcResponse = await responseMsg.Content.ReadAsStringAsync();
+        // same thing as above here..
+        var rawRpcResponse = await responseMsg.Content.ReadAsStringAsync();
 
-            var solanaTransactionResponse = JsonSerializer.Deserialize<SolanaGetTransactionResponse>(rawRpcResponse) ?? throw new ArgumentException("Solana Transaction Resposne Was Null");
-           
-           if(solanaTransactionResponse.result == null) throw new InvalidOperationException("Unable to communicate with Solana Node RPC");
-           
-            var finalInstructions = solanaTransactionResponse.result.transaction.message.instructions[2]; // Confrim it's always going to be the last instruction
-            var blockTime = solanaTransactionResponse.result.blockTime;
+        var solanaTransactionResponse = JsonSerializer.Deserialize<SolanaGetTransactionResponse>(rawRpcResponse) ?? throw new ArgumentException("Solana Transaction Resposne Was Null");
 
-            var transactionValidationResult = new ParsedTransactionValidationResult()
-            {
-                Transaction = txid,
-                Blocktime = blockTime,
-                OriginWallet = finalInstructions.parsed.info.source,
-                DestinationWallet = finalInstructions.parsed.info.destination,
-                AmmountLamports = finalInstructions.parsed.info.lamports,
-                TransactionType = finalInstructions.parsed.type
-            };
+        if (solanaTransactionResponse.result == null) throw new InvalidOperationException("Unable to communicate with Solana Node RPC");
 
-            return transactionValidationResult;
-        
+        var finalInstructions = solanaTransactionResponse.result.transaction.message.instructions[2]; // Confrim it's always going to be the last instruction
+        var blockTime = solanaTransactionResponse.result.blockTime;
+
+        var transactionValidationResult = new ParsedTransactionValidationResult()
+        {
+            Transaction = txid,
+            Blocktime = blockTime,
+            OriginWallet = finalInstructions.parsed.info.source,
+            DestinationWallet = finalInstructions.parsed.info.destination,
+            AmmountLamports = finalInstructions.parsed.info.lamports,
+            TransactionType = finalInstructions.parsed.type
+        };
+
+        return transactionValidationResult;
+
     }
 
     private ValidatedTextToArtTranscationRequest ValidationTransactionResult(ParsedTransactionValidationResult parsedTransactionValidationResult, TextToArtTranscationRequest transcationRequest)
