@@ -10,8 +10,4 @@ public class ValidatedTextToArtTranscationRequest
   public string? StylePreset { get; set; }
   public int Samples { get; set; }
   public required TextPrompt[] TextPrompts { get; set; }
-
 }
-
-
-
