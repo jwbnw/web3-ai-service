@@ -12,6 +12,7 @@ public class TextToArtTranscationRequest
   public int CfgScale { get; set; } // when sending to ai backend will need to serlize camelCase with underscore. probably in a different model
   public string? StylePreset { get; set; }
   public int Samples { get; set; }
+  
   public required TextPrompt[] TextPrompts { get; set; }
   public required TransactionDetail TransactionRequest { get; set; }
 }

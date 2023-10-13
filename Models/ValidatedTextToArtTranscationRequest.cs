@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Web3Ai.Service.Models;
 
 public class ValidatedTextToArtTranscationRequest
@@ -9,5 +11,7 @@ public class ValidatedTextToArtTranscationRequest
   public int CfgScale { get; set; } // when sending to ai backend will need to serlize camelCase with underscore. probably in a different model
   public string? StylePreset { get; set; }
   public int Samples { get; set; }
+  
+  [JsonPropertyName("text_prompts")]
   public required TextPrompt[] TextPrompts { get; set; }
 }
