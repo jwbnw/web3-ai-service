@@ -9,6 +9,8 @@ public class ValidatedTextToArtTranscationRequest
   public int Height { get; set; }
   public int Seed { get; set; }
   public int CfgScale { get; set; } // when sending to ai backend will need to serlize camelCase with underscore. probably in a different model
+  
+  [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
   public string? StylePreset { get; set; }
   public int Samples { get; set; }
   
