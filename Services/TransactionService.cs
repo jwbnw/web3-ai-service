@@ -21,6 +21,7 @@ public class TransactionService : ITransactionService
     {
         _httpClientFactory = httpClientFactory;
     }
+
     async Task<ValidatedTextToArtTranscationRequest> ITransactionService.VerifyTransaction(TextToArtTranscationRequest transcationRequest)
     {
         if (transcationRequest.TransactionRequest.Signature == null) throw new ArgumentNullException();
@@ -52,8 +53,6 @@ public class TransactionService : ITransactionService
          Application.Json
         );
 
-
-
         // don't do this live. just for testing/hackathon rush
         var responseMsg = await txClient.PostAsync("https://api.devnet.solana.com", txData);
 
@@ -78,7 +77,6 @@ public class TransactionService : ITransactionService
         };
 
         return transactionValidationResult;
-
     }
 
     private ValidatedTextToArtTranscationRequest ValidationTransactionResult(ParsedTransactionValidationResult parsedTransactionValidationResult, TextToArtTranscationRequest transcationRequest)
@@ -135,7 +133,6 @@ public class TransactionService : ITransactionService
         };
     }
 
-    //TODO: Needs testing.
     private bool isValidTimeStamp(int blocktime)
     {
         var blockTimeDateTime = DateTimeOffset.FromUnixTimeSeconds(blocktime);
@@ -147,12 +144,8 @@ public class TransactionService : ITransactionService
             return true;
 
         return false;
-
     }
 
     // This needs to get wrapped into some HttpProxy class but this works for now..
     private readonly IHttpClientFactory _httpClientFactory;
-
 }
-
-
