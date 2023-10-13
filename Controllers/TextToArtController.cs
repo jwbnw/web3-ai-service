@@ -5,7 +5,6 @@ using Web3Ai.Service.Services;
 
 namespace Web3Ai.Service.Controllers;
 
-//TODO: Add a controller exception filter or enter a ticket to do so.
 [ApiController]
 [Authorize]
 [Route("api/text-to-art")]
