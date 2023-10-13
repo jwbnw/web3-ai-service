@@ -6,6 +6,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Text;
 
 using System.Net.Http.Headers;
+using System.Diagnostics;
 
 namespace Web3Ai.Service.Services;
 
@@ -26,6 +27,8 @@ public class TextToArtService : ITextToArtService
     {
         // esstablish http client
         var stablityHttpClient = _httpClientFactory.CreateClient("StablityClient");
+        stablityHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("sk-mxFuM8fKYKT5f9HAUHmIkdYnWdH27EeaX5tcENEP541Y8eUv");
+
 
         // make text to art request.
         var postData = new StringContent(
@@ -34,30 +37,36 @@ public class TextToArtService : ITextToArtService
             Application.Json
         );
 
-        stablityHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ValueHere");
 
         //try for debugging  top level will handle
  
-            var response = await stablityHttpClient.PostAsync("https://api.stablity.ai/v1/generation/stable-diffusion-x1-1024-v1-0/text-to-image", postData);
+            var response = await stablityHttpClient.PostAsync("https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image", postData);
             var rawContent = await response.Content.ReadAsStringAsync();
+
+            // Debug.WriteLine(rawContent);
+           // var mockResp = """{"artifacts":[{"base64":"NE1yXL9wKg/7ISKRTARJs0HeDfSPjI6sT7NscWl+qdnw4lVXKnNWnKACgGVjxtasHVu/6dDUIaRu4/oXWlPOpKqm4WyZ0IJacALEZBwC5FZUXZdty4wvPdwYkcDMh/cggZlZJRNgghuFEOzUckr9sZtq/d8oBPKuBZz/BBfrwLEG0rErEqQAfOf2hajy2Js/6k1nM/BDAMjMBDYklIQ8YJjnOakdv0F+5TVXfeZj9/zNB9/UsB/6ld94U3/MJuljGIhV40Hko0SYHGCEFYB4M9vHPDtkZyfeNbecJB7sSgRcN00/lU4Q9ZlgTa2bo1nQAAAABJRU5ErkJggg==","seed":3303980766,"finishReason":"SUCCESS"}]}""";
+           // var testContent = JsonSerializer.Serialize(mockResp);
 
             var stablityTextToArtResponse = JsonSerializer.Deserialize<StablityTextToArtResponse>(rawContent);
 
-            var finalList = new TextToArtTransactionResult();
+            var finalList = new TextToArtTransactionResult
+            {
+                StablityTextToArtImages = new List<TextToArtImage>()
+            };
 
-            if(stablityTextToArtResponse?.StablityTextToArtImages == null) throw new ArgumentNullException("StablityTextToArtImages");
+            if (stablityTextToArtResponse?.artifacts == null) throw new ArgumentNullException("StablityTextToArtImages");
 
 
-            foreach(var value in stablityTextToArtResponse.StablityTextToArtImages)
+            foreach(var value in stablityTextToArtResponse.artifacts)
             {
                 var finalImage = new TextToArtImage()
                 {
-                    Base64 = value.Base64,
-                    FinshReason = value.FinshReason,
-                    Seed = value.Seed
+                    Base64 = value.base64,
+                    FinishReason = value.finishReason,
+                    Seed = value.seed
                 };
 
-                finalList?.StablityTextToArtImages?.Add(finalImage);
+                finalList.StablityTextToArtImages.Add(finalImage);
             }           
             
             if (finalList == null) throw new ArgumentNullException("finalList"); // clean this up
