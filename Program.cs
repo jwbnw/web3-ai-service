@@ -13,7 +13,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 //For Local Development
-
 builder.Services.AddCors(options => {
     options.AddPolicy(name: localPolicyName,
                         builder => 
@@ -24,9 +23,6 @@ builder.Services.AddCors(options => {
                                 .AllowAnyHeader();
                         });
 });
-
-
-
 
 //DI
 builder.Services.AddHttpClient();
