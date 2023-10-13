@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Web3Ai.Service.Models.TextToArt;
@@ -14,7 +13,6 @@ namespace Web3Ai.Service.Models.TextToArt;
         [JsonPropertyName("finishReason")]
         public string? FinishReason { get; set; }
     }
-
 
     public class StablityTextToArtResponse
     {
