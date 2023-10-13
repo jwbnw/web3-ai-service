@@ -16,7 +16,6 @@ public interface ITextToArtService
 
 public class TextToArtService : ITextToArtService
 {
-
     public TextToArtService(IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
