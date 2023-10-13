@@ -87,7 +87,7 @@ public class TransactionService : ITransactionService
             throw new ValidationException("Transaction Invalid. Code: {cs code}");
         }
 
-        //Reciever
+        //Reciever (TODO: should be env var)
         if (parsedTransactionValidationResult.DestinationWallet != "9GXxoq5MFKe3Zwh36EKJrRNMCauf3j83iUWHp6qKc4HG")
         {
             throw new ValidationException("Transaction Invalid. Code: {cs code}");
