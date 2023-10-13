@@ -93,8 +93,8 @@ public class TransactionService : ITransactionService
             throw new ValidationException("Transaction Invalid. Code: {cs code}");
         }
 
-        //Ammount roughly ~10c at time of commit. TODO: Build backend price calculator based on art request and service
-        if (parsedTransactionValidationResult.AmmountLamports < 4530000)
+        //Ammount roughly ~8c at time of commit. TODO: Build backend price calculator based on art request and service
+        if (parsedTransactionValidationResult.AmmountLamports > 3619909)
         {
             throw new ValidationException("Transaction Invalid. Code: {cs code}");
         }
