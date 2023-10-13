@@ -5,7 +5,6 @@ using Web3Ai.Service.Services;
 
 namespace Web3Ai.Service.Controllers;
 
-//TODO: Add a controller exception filter or enter a ticket to do so.
 public abstract class ServiceBaseController : ControllerBase
 {
     // Downstream handles generic Ex and re-throws specific error
@@ -17,10 +16,10 @@ public abstract class ServiceBaseController : ControllerBase
         {
             return Ok(await expression.Invoke());
         }
-        catch (Exception ex) // Temp. Exceptions here should be known..
+        // Suppression is temp. Should be logged .
+        catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return StatusCode(500);
         }
     }
-
 }
