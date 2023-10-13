@@ -1,15 +1,23 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Web3Ai.Service.Models.TextToArt;
 
     public class Artifact
     {
-        public string base64 { get; set; }
-        public long seed { get; set; }
-        public string finishReason { get; set; }
+        [JsonPropertyName("base64")]
+        public string? Base64 { get; set; }
+
+        [JsonPropertyName("seed")]
+        public long Seed { get; set; }
+
+        [JsonPropertyName("finishReason")]
+        public string? FinishReason { get; set; }
     }
+
 
     public class StablityTextToArtResponse
     {
-        public List<Artifact> artifacts { get; set; }
+        [JsonPropertyName("artifacts")]
+        public List<Artifact>? Artifacts { get; set; }
     }
