@@ -94,7 +94,7 @@ public class TransactionService : ITransactionService
         }
 
         //Ammount roughly ~8c at time of commit. TODO: Build backend price calculator based on art request and service
-        if (parsedTransactionValidationResult.AmmountLamports > 3619909)
+        if (parsedTransactionValidationResult.AmmountLamports < 3619909)
         {
             throw new ValidationException("Transaction Invalid. Code: {cs code}");
         }
