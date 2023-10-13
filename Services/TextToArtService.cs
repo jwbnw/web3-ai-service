@@ -27,7 +27,7 @@ public class TextToArtService : ITextToArtService
     {
         // esstablish http client
         var stablityHttpClient = _httpClientFactory.CreateClient("StablityClient");
-        stablityHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("sk-mxFuM8fKYKT5f9HAUHmIkdYnWdH27EeaX5tcENEP541Y8eUv");
+        stablityHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("");
 
 
         // make text to art request.
