@@ -107,12 +107,17 @@ public class TransactionService : ITransactionService
             throw new ValidationException("Transaction Invalid. Code: {cs code}");
         }
 
-        //Time (transaction must be less than 30 Seconds old - when we go live we'll have a self service tx redemption tool.)
+        //Time (transaction must be less than 60 Seconds old - when we go live we'll have a self service tx redemption tool.)
         if (!isValidTimeStamp(parsedTransactionValidationResult.Blocktime))
         {
             throw new ValidationException("Transaction Invalid. Code: {cs code}");
         }
 
+        //TODO: This + content validation in general can be improved
+        if(transcationRequest.StylePreset == "None")
+        {
+            transcationRequest.StylePreset = null;
+        }
         // TODO:
         // implement a cache and ensure that the signature is not in the cache, if so add it so 
         // it cannot be re-used. 
