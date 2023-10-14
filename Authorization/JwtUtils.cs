@@ -15,14 +15,12 @@ public interface IJwtUtils
 
 public class JwtUtils : IJwtUtils
 {
-    private readonly AppSettings _appSettings;
-
     public JwtUtils(IOptions<AppSettings> appSettings)
     {
         _appSettings = appSettings.Value;
 
         // TODO: Move this out of the ctor (w/ next auth refactor)
-        if (string.IsNullOrEmpty(_appSettings.Secret))
+        if (string.IsNullOrEmpty(_appSettings.JwtSecret))
             throw new Exception("JWT secret not configured");
     }
 
@@ -30,7 +28,7 @@ public class JwtUtils : IJwtUtils
     {
         // generate token that is valid for 7 days
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_appSettings.Secret!);
+        var key = Encoding.ASCII.GetBytes(_appSettings.JwtSecret!);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[] { new Claim("userid", user.UserId.ToString()) }),
@@ -47,7 +45,7 @@ public class JwtUtils : IJwtUtils
             return null;
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(_appSettings.Secret!);
+        var key = Encoding.ASCII.GetBytes(_appSettings.JwtSecret!);
         try
         {
             tokenHandler.ValidateToken(token, new TokenValidationParameters
@@ -72,4 +70,6 @@ public class JwtUtils : IJwtUtils
             return null;
         }
     }
+
+        private readonly AppSettings _appSettings;
 }
