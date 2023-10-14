@@ -33,4 +33,6 @@ public class TransactionDetail
   public string? Signature { get; set; }
 
   public string? PayerKey { get; set; }
+
+  public string? Env {get; set;}
 }
