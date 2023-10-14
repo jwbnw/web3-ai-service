@@ -6,6 +6,7 @@ using System.Text.Json;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text;
 using System.Net.Http.Headers;
+using Microsoft.Extensions.Options;
 
 namespace Web3Ai.Service.Services;
 
@@ -16,15 +17,18 @@ public interface ITextToArtService
 
 public class TextToArtService : ITextToArtService
 {
-    public TextToArtService(IHttpClientFactory httpClientFactory)
+    public TextToArtService(IHttpClientFactory httpClientFactory, IOptions<AppSettings> appSettings)
     {
         _httpClientFactory = httpClientFactory;
+        _appSettings = appSettings.Value;
     }
 
     async Task<TextToArtTransactionResult> ITextToArtService.GenerateArt(ValidatedTextToArtTranscationRequest transcationRequest)
     {
+       if (_appSettings.StablityApiKey == null) throw new ArgumentNullException("Api Key should not be null;");
+       
         var stablityHttpClient = _httpClientFactory.CreateClient("StablityClient");
-        stablityHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("");
+        stablityHttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(_appSettings.StablityApiKey);
 
         var postData = new StringContent(
             JsonSerializer.Serialize(transcationRequest),
@@ -63,4 +67,6 @@ public class TextToArtService : ITextToArtService
         return finalList;
     }
     private readonly IHttpClientFactory _httpClientFactory;
+
+    private readonly AppSettings _appSettings;
 }

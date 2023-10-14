@@ -7,6 +7,7 @@ using System.Text;
 using System.ComponentModel.DataAnnotations;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using Microsoft.Extensions.Options;
 
 namespace Web3Ai.Service.Services;
 
@@ -17,8 +18,9 @@ public interface ITransactionService
 
 public class TransactionService : ITransactionService
 {
-    public TransactionService(IHttpClientFactory httpClientFactory)
+    public TransactionService(IHttpClientFactory httpClientFactory, IOptions<AppSettings> appSettings)
     {
+        _appSettings = appSettings.Value;
         _httpClientFactory = httpClientFactory;
     }
 
@@ -88,7 +90,7 @@ public class TransactionService : ITransactionService
         }
 
         //Reciever (TODO: should be env var)
-        if (parsedTransactionValidationResult.DestinationWallet != "9GXxoq5MFKe3Zwh36EKJrRNMCauf3j83iUWHp6qKc4HG")
+        if (parsedTransactionValidationResult.DestinationWallet != _appSettings.ServiceWallet)
         {
             throw new ValidationException("Transaction Invalid. Code: {cs code}");
         }
@@ -148,4 +150,7 @@ public class TransactionService : ITransactionService
 
     // This needs to get wrapped into some HttpProxy class but this works for now..
     private readonly IHttpClientFactory _httpClientFactory;
+
+    private readonly AppSettings _appSettings;
+
 }
