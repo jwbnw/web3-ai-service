@@ -10,7 +10,7 @@ public class ParsedTransactionValidationResult
 
     public required string DestinationWallet { get; set; }
 
-    public required int AmmountLamports { get; set; }
+    public required long AmmountLamports { get; set; }
 
     public required string TransactionType { get; set; }
 }
