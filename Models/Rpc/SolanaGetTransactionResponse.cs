@@ -20,7 +20,7 @@ namespace Web3Ai.Service.Models.Rpc;
     public class Info
     {
         public string destination { get; set; }
-        public int lamports { get; set; }
+        public long lamports { get; set; }
         public string source { get; set; }
     }
 
@@ -48,9 +48,9 @@ namespace Web3Ai.Service.Models.Rpc;
         public int fee { get; set; }
         public List<object> innerInstructions { get; set; }
         public List<string> logMessages { get; set; }
-        public List<int> postBalances { get; set; }
+        public List<long> postBalances { get; set; }
         public List<object> postTokenBalances { get; set; }
-        public List<int> preBalances { get; set; }
+        public List<long> preBalances { get; set; }
         public List<object> preTokenBalances { get; set; }
         public List<object> rewards { get; set; }
         public Status status { get; set; }
