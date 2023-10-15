@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Web3Ai.Service.Authorization;
 using Web3Ai.Service.Models;
@@ -19,6 +20,7 @@ public abstract class ServiceBaseController : ControllerBase
         // Suppression is temp. Should be logged .
         catch (Exception ex)
         {
+            Debug.WriteLine("Ex: handled in ServiceBaseController", ex.Message);
             return StatusCode(500);
         }
     }

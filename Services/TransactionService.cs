@@ -28,11 +28,13 @@ public class TransactionService : ITransactionService
     {
         if (transcationRequest.TransactionRequest.Signature == null) throw new ArgumentNullException();
 
-        var parsedTransactionValidationResult = await GetTransactionValidationResult(transcationRequest.TransactionRequest.Signature);
+        var solanaEnv = GetSolanaNetwork(transcationRequest);
+
+        var parsedTransactionValidationResult = await GetTransactionValidationResult(transcationRequest.TransactionRequest.Signature, solanaEnv);
         return ValidationTransactionResult(parsedTransactionValidationResult, transcationRequest);
     }
 
-    private async Task<ParsedTransactionValidationResult> GetTransactionValidationResult(string txid)
+    private async Task<ParsedTransactionValidationResult> GetTransactionValidationResult(string txid, SolanaEnvironments solanaEnv)
     {
         // Do a better job with http client, this + the using is hacky.. 
         var txClient = _httpClientFactory.CreateClient("GetTransaction");
@@ -55,8 +57,18 @@ public class TransactionService : ITransactionService
          Application.Json
         );
 
+        var solanaNetwork = "";
+
+        solanaNetwork = solanaEnv switch
+        {
+            SolanaEnvironments.Dev => SolanaDevNet,
+            SolanaEnvironments.Test => SolanaTestNet,
+            SolanaEnvironments.Live => SolanaLiveNet,
+            _ => SolanaLiveNet,
+        };
+
         // don't do this live. just for testing/hackathon rush
-        var responseMsg = await txClient.PostAsync("https://api.devnet.solana.com", txData);
+        var responseMsg = await txClient.PostAsync(solanaNetwork, txData);
 
         // same thing as above here..
         var rawRpcResponse = await responseMsg.Content.ReadAsStringAsync();
@@ -92,25 +104,25 @@ public class TransactionService : ITransactionService
         //Reciever (TODO: should be env var)
         if (parsedTransactionValidationResult.DestinationWallet != _appSettings.ServiceWallet)
         {
-            throw new ValidationException("Transaction Invalid. Code: {cs code}");
+            throw new ValidationException("Transaction Invalid. Code: {DestinationWallet}");
         }
 
         //Ammount roughly ~8c at time of commit. TODO: Build backend price calculator based on art request and service
         if (parsedTransactionValidationResult.AmmountLamports < 3619909)
         {
-            throw new ValidationException("Transaction Invalid. Code: {cs code}");
+            throw new ValidationException("Transaction Invalid. Code: {AmmountLamports}");
         }
 
         //Type
         if (parsedTransactionValidationResult.TransactionType != "transfer")
         {
-            throw new ValidationException("Transaction Invalid. Code: {cs code}");
+            throw new ValidationException("Transaction Invalid. Code: {TransactionType}");
         }
 
         //Time (transaction must be less than 60 Seconds old - when we go live we'll have a self service tx redemption tool.)
         if (!isValidTimeStamp(parsedTransactionValidationResult.Blocktime))
         {
-            throw new ValidationException("Transaction Invalid. Code: {cs code}");
+            throw new ValidationException("Transaction Invalid. Code: {Blocktime}");
         }
 
         //TODO: This + content validation in general can be improved
@@ -148,9 +160,41 @@ public class TransactionService : ITransactionService
         return false;
     }
 
+    //TODO: these should be case insensitive...
+    private SolanaEnvironments GetSolanaNetwork(TextToArtTranscationRequest transactionReqeust)
+    {
+        if(transactionReqeust.TransactionRequest.Env == "Dev")
+        {
+            return SolanaEnvironments.Dev;
+        }
+        if(transactionReqeust.TransactionRequest.Env  == "Test")
+        {
+            return SolanaEnvironments.Test;
+        }
+        if(transactionReqeust.TransactionRequest.Env  == "Live")
+        {
+            return SolanaEnvironments.Live;
+        }
+        // Should never hit this fallback - TODO: log here if in case
+        return SolanaEnvironments.Live;
+    }
+
+    enum SolanaEnvironments
+    {
+        Dev,
+        Test,
+        Live
+    }
+
     // This needs to get wrapped into some HttpProxy class but this works for now..
     private readonly IHttpClientFactory _httpClientFactory;
 
     private readonly AppSettings _appSettings;
+
+    private const string SolanaDevNet = "https://api.devnet.solana.com";
+
+    private const string SolanaTestNet = "https://api.testnet.solana.com";
+
+    private const string SolanaLiveNet = "https://api.mainnet-beta.solana.com";
 
 }
