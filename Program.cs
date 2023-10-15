@@ -8,6 +8,7 @@ using Web3Ai.Service.Utils;
 using Swashbuckle.AspNetCore.Annotations;
 
 var localPolicyName = "_myAllowLocalLogins";
+var livePolicyName = "_liveAzureStatic";
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -19,6 +20,14 @@ builder.Services.AddCors(options => {
                         {
                             builder
                                 .WithOrigins("http://localhost:3000")
+                                .WithMethods("GET", "POST", "PUT", "DELETE")
+                                .AllowAnyHeader();
+                        });
+        options.AddPolicy(name: livePolicyName,
+                        builder => 
+                        {
+                            builder
+                                .WithOrigins("https://gray-sky-0c7072c1e.3.azurestaticapps.net/")
                                 .WithMethods("GET", "POST", "PUT", "DELETE")
                                 .AllowAnyHeader();
                         });
