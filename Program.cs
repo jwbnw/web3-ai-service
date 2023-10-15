@@ -14,23 +14,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 //For Local Development
-builder.Services.AddCors(options => {
+builder.Services.AddCors(options =>
+{
     options.AddPolicy(name: localPolicyName,
-                        builder => 
+                        builder =>
                         {
                             builder
                                 .WithOrigins("http://localhost:3000")
                                 .WithMethods("GET", "POST", "PUT", "DELETE")
                                 .AllowAnyHeader();
                         });
-        options.AddPolicy(name: livePolicyName,
-                        builder => 
-                        {
-                            builder
-                                .WithOrigins("http://gray-sky-0c7072c1e.3.azurestaticapps.net")
-                                .WithMethods("GET", "POST", "PUT", "DELETE")
-                                .AllowAnyHeader();
-                        });
+    options.AddPolicy(name: livePolicyName,
+                    builder =>
+                    {
+                        builder
+                            .WithOrigins("https://gray-sky-0c7072c1e.3.azurestaticapps.net")
+                            .WithMethods("GET", "POST", "PUT", "DELETE")
+                            .AllowAnyHeader();
+                    });
 });
 
 //DI
