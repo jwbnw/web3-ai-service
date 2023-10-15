@@ -195,6 +195,6 @@ public class TransactionService : ITransactionService
 
     private const string SolanaTestNet = "https://api.testnet.solana.com";
 
-    private const string SolanaLiveNet = "https://api.mainnet-beta.solana.com";
+    private const string SolanaLiveNet = "https://rpc.helius.xyz/?api-key=8949714d-2da1-48db-9101-a9511113e7fe";
 
 }
