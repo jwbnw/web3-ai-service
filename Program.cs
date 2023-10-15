@@ -28,7 +28,7 @@ builder.Services.AddCors(options =>
                     builder =>
                     {
                         builder
-                            .WithOrigins("https://gray-sky-0c7072c1e.3.azurestaticapps.net")
+                            .WithOrigins("https://www.web3ai-beta.com")
                             .WithMethods("GET", "POST", "PUT", "DELETE")
                             .AllowAnyHeader();
                     });
@@ -71,7 +71,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(livePolicyName);
+app.UseCors(livePolicyName); // think I will need to comment this one out for dev.
 app.UseCors(localPolicyName);
 
 app.UseAuthorization();
