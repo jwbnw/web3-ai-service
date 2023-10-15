@@ -71,6 +71,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors(localPolicyName);
+app.UseCors(livePolicyName);
 
 app.UseAuthorization();
 
