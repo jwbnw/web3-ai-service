@@ -27,7 +27,7 @@ builder.Services.AddCors(options => {
                         builder => 
                         {
                             builder
-                                .WithOrigins("https://gray-sky-0c7072c1e.3.azurestaticapps.net/")
+                                .WithOrigins("https://gray-sky-0c7072c1e.3.azurestaticapps.net")
                                 .WithMethods("GET", "POST", "PUT", "DELETE")
                                 .AllowAnyHeader();
                         });
