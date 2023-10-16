@@ -1,4 +1,4 @@
-[![Build and deploy ASP.Net Core app to Azure Web App - web3aisvc](https://github.com/jwbnw/web3-ai-service/actions/workflows/master_web3aisvc.yml/badge.svg)](https://github.com/jwbnw/web3-ai-service/actions/workflows/master_web3aisvc.yml)
+[![Build and deploy - web3aisvc](https://github.com/jwbnw/web3-ai-service/actions/workflows/master_web3aisvc.yml/badge.svg)](https://github.com/jwbnw/web3-ai-service/actions/workflows/master_web3aisvc.yml)
 
 ## WIP Solana Hyperdrive Hackathon Project
 
