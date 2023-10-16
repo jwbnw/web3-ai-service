@@ -2,8 +2,13 @@
 
 Service Layer For Web3 AI
 
-Readme is WIP and may be incomplete at times. Reach out to repo owner with questions.
+The application is live for a short time at: https://www.web3ai-beta.com/ please consider the following.
 
+- State is temporary
+- Unexpected behavior may occor
+- Please raise any issues with the repo owner.   
+
+Readme is WIP and may be incomplete at times. Reach out to repo owner with questions.
 
 ## Local Dev Getting Started
 
