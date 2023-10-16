@@ -21,7 +21,7 @@ public abstract class ServiceBaseController : ControllerBase
         catch (Exception ex)
         {
             Debug.WriteLine("Ex: handled in ServiceBaseController", ex.Message);
-            return BadRequest(ex.Message);
+            return StatusCode(500);
         }
     }
 }
