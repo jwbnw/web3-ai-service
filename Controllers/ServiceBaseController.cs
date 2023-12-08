@@ -20,9 +20,9 @@ public abstract class ServiceBaseController : ControllerBase
         // Suppression is temp. Should be logged .
         catch (Exception ex)
         {
-            return Ok(ex.Message); // Hack
+            Debug.WriteLine("Ex: handled in ServiceBaseController", ex.Message);
+            return BadRequest(ex.Message); // Hack for beta to make debugging faster
              
-            // Debug.WriteLine("Ex: handled in ServiceBaseController", ex.Message);
           //  return StatusCode(500, );
         }
     }
