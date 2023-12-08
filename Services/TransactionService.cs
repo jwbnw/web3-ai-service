@@ -63,8 +63,8 @@ public class TransactionService : ITransactionService
         {
             SolanaEnvironments.Dev => SolanaDevNet,
             SolanaEnvironments.Test => SolanaTestNet,
-            SolanaEnvironments.Live => SolanaLiveNet,
-            _ => SolanaLiveNet,
+            SolanaEnvironments.Live => _appSettings.SolanaRpcNodeUrl,
+            _ => _appSettings.SolanaRpcNodeUrl,
         };
 
         // don't do this live. just for testing/hackathon rush
@@ -194,7 +194,5 @@ public class TransactionService : ITransactionService
     private const string SolanaDevNet = "https://api.devnet.solana.com";
 
     private const string SolanaTestNet = "https://api.testnet.solana.com";
-
-    private const string SolanaLiveNet = "https://rpc.helius.xyz/?api-key=8949714d-2da1-48db-9101-a9511113e7fe";
 
 }
