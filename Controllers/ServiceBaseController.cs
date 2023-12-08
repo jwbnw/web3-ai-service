@@ -23,7 +23,8 @@ public abstract class ServiceBaseController : ControllerBase
             Debug.WriteLine("Ex: handled in ServiceBaseController", ex.Message);
             return BadRequest(ex.Message); // Hack for beta to make debugging faster
              
-          //  return StatusCode(500, );
+           // TODO: put logging in place  
+          //  return StatusCode(500);
         }
     }
 }
